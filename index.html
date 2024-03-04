@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REST API Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .content {
+        text-align: left;
+    }
+    .image-container {
+        position: relative;
+        width: 200px;
+        margin-right: 20px;
+    }
+    .image-container img {
+        width: 100%;
+    }
+    .image-details {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    }
+    form {
+        margin-top: 20px;
+    }
+    form input,
+    form textarea,
+    form button {
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="content">
+        <h1>Your Blog</h1>
+        <p>Total Blog: <span id="blogCount">0</span></p>
+        
+        <!-- Blog Form -->
+        <form id="blogForm">
+            <label for="imageUrl">Image URL:</label><br>
+            <input type="text" id="imageUrl" name="imageUrl" required><br><br>
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" required><br><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description" required></textarea><br><br>
+            <button type="submit">Post Blog</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Blog counter
+    let blogCount = 0;
+    const blogCountElement = document.getElementById('blogCount');
+
+    // Blog form submission
+    document.getElementById('blogForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const imageUrl = document.getElementById('imageUrl').value;
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+
+        // Increment blog count
+        blogCount++;
+        blogCountElement.textContent = blogCount;
+
+        // Display entered image, title, and description
+        const blogContainer = document.createElement('div');
+        blogContainer.classList.add('image-container');
+
+        const enteredImage = document.createElement('img');
+        enteredImage.src = imageUrl;
+        blogContainer.appendChild(enteredImage);
+
+        const imageDetails = document.createElement('div');
+        imageDetails.classList.add('image-details');
+
+        const blogTitle = document.createElement('h2');
+        blogTitle.textContent = title;
+        imageDetails.appendChild(blogTitle);
+
+        const blogDescription = document.createElement('p');
+        blogDescription.textContent = description;
+        imageDetails.appendChild(blogDescription);
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit Blog';
+        imageDetails.appendChild(editButton);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete Blog';
+        imageDetails.appendChild(deleteButton);
+
+        blogContainer.appendChild(imageDetails);
+
+        document.body.appendChild(blogContainer);
+
+        // Clear form fields after submission
+        document.getElementById('imageUrl').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+    });
+</script>
+
+</body>
+</html>
