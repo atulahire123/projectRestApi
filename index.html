@@ -12,12 +12,19 @@
     }
     .container {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column; /* Align items vertically */
+        align-items: left;
         height: 100vh;
     }
     .content {
-        text-align: left;
+        text-align: center;
+        margin-bottom: 20px; /* Add margin to separate from form */
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column; /* Align form items vertically */
+        align-items: flex-start; /* Align form items to the left */
+        margin-left: 20px; /* Add margin to separate from centered content */
     }
     .image-container {
         position: relative;
@@ -28,10 +35,6 @@
         width: 100%;
     }
     .image-details {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
         padding: 10px;
         background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
     }
@@ -51,14 +54,16 @@
     <div class="content">
         <h1>Your Blog</h1>
         <p>Total Blog: <span id="blogCount">0</span></p>
-        
-        <!-- Blog Form -->
+    </div>
+
+    <!-- Blog Form -->
+    <div class="form-container">
         <form id="blogForm">
             <label for="imageUrl">Image URL:</label><br>
             <input type="text" id="imageUrl" name="imageUrl" required><br><br>
             <label for="title">Title:</label><br>
             <input type="text" id="title" name="title" required><br><br>
-            <label for="description">Description:</label><br>
+            <label for="description">Blog Description:</label><br>
             <textarea id="description" name="description" required></textarea><br><br>
             <button type="submit">Post Blog</button>
         </form>
@@ -86,30 +91,32 @@
         const blogContainer = document.createElement('div');
         blogContainer.classList.add('image-container');
 
-        const enteredImage = document.createElement('img');
-        enteredImage.src = imageUrl;
-        blogContainer.appendChild(enteredImage);
-
-        const imageDetails = document.createElement('div');
-        imageDetails.classList.add('image-details');
+        const blogDetails = document.createElement('div');
+        blogDetails.classList.add('image-details');
 
         const blogTitle = document.createElement('h2');
         blogTitle.textContent = title;
-        imageDetails.appendChild(blogTitle);
+        blogDetails.appendChild(blogTitle);
+
+        const enteredImage = document.createElement('img');
+        enteredImage.src = imageUrl;
 
         const blogDescription = document.createElement('p');
         blogDescription.textContent = description;
-        imageDetails.appendChild(blogDescription);
 
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit Blog';
-        imageDetails.appendChild(editButton);
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete Blog';
-        imageDetails.appendChild(deleteButton);
 
-        blogContainer.appendChild(imageDetails);
+        blogDetails.appendChild(blogTitle);
+        blogDetails.appendChild(enteredImage);
+        blogDetails.appendChild(blogDescription);
+        blogDetails.appendChild(editButton);
+        blogDetails.appendChild(deleteButton);
+
+        blogContainer.appendChild(blogDetails);
 
         document.body.appendChild(blogContainer);
 
