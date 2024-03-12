@@ -12,39 +12,85 @@
         }
         .container {
             display: flex;
-            flex-direction: column; /* Align items vertically */
-            align-items: left;
-            height: auto; /* Changed from '100vh' to 'auto' */
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
         .content {
             text-align: center;
-            margin-bottom: 20px; /* Add margin to separate from form */
+            margin-bottom: 20px;
+        }
+        .content h3, .content p {
+            margin: 0;
+            font-weight:bold;
+            font-size:small;
+        }
+        #blogCount {
+            font-weight: bold;
+            font-size:small;
         }
         .form-container {
+            width: 100%;
+            max-width: 400px;
+            align-self: flex-start;
+        }
+        .form-group {
             display: flex;
-            flex-direction: column; /* Align form items vertically */
-            align-items: flex-start; /* Align form items to the left */
-            margin-left: 20px; /* Add margin to separate from centered content */
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group textarea {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        #blogsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px;
         }
         .image-container {
             position:relative;
             width: 250px;
-            margin-right: 20px;
+            margin-right:0;
         }
+        
         .image-container img {
             width: 100%;
         }
         .image-details {
             padding: 10px;
             background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+        } 
+        .image-details h2 {
+            margin-top: 0;
         }
-        form {
-            margin-top: 20px;
-        }
-        form input,
-        form textarea,
-        form button {
+        .image-details p {
             margin-bottom: 10px;
+        }
+        .image-details button {
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -52,171 +98,216 @@
 
 <div class="container">
     <div class="content">
-        <h1>Your Blog</h1>
+        <h3>Your Blog</h3>
         <p>Total Blog: <span id="blogCount">0</span></p>
     </div>
 
-    <!-- Blog Form -->
-    <div class="form-container">
-        <form id="blogForm">
-            <label for="imageUrl">Image URL:</label><br>
-            <input type="text" id="imageUrl" name="imageUrl" required><br><br>
-            <label for="title">Title:</label><br>
-            <input type="text" id="title" name="title" required><br><br>
-            <label for="description">Blog Description:</label><br>
-            <textarea id="description" name="description" required></textarea><br><br>
-            <button type="submit">Post Blog</button>
-        </form>
-    </div>
-
+    
+<!-- Blog Form -->
+<div class="form-container">
+    <form id="blogForm">
+        <label for="imageUrl">Image URL:</label>
+        <input type="url" id="imageUrl" name="imageUrl" required><br><br>
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+    
+        <label for="description">Blog Description:</label>
+        <input type="text" id="description" name="description" required><br><br>
+    
+        <button type="submit">Post Blog</button><br><br>
+    </form>
+    <hr width="100%"  size="2">
+</div>
     <!-- Container for Blogs -->
     <div id="blogsContainer"></div>
 </div>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
     // Blog counter
-  // Blog counter
-let blogCount = 0;
-const blogCountElement = document.getElementById('blogCount');
-let blogs = []; // Array to store fetched blogs
+    let blogCount = 0;
+    const blogCountElement = document.getElementById('blogCount');
+    let blogs = []; // Array to store fetched blogs
 
-// Function to fetch blogs
-async function fetchBlogs() {
-    try {
-        const response = await axios.get('https://crudcrud.com/api/8b03a74bec00430684d0c6cad8fd477f/data'); // Replace 'your-api-endpoint' with your actual endpoint
-        blogs = response.data;
-        return blogs;
-    } catch (error) {
-        console.error('Error fetching blogs:', error);
-        return [];
+
+    // Function to fetch blogs
+    async function fetchBlogs() {
+        try {
+            const response = await axios.get('https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data'); // Replace 'your-api-endpoint' with your actual endpoint
+            blogs = response.data;
+            return blogs;
+        } catch (error) {
+            console.error('Error fetching blogs:', error);
+            return [];
+        }
     }
-}
 
-// Function to render blogs
-async function renderBlogs() {
-    blogs = await fetchBlogs();
-    blogCountElement.textContent = blogs.length; // Update total blog count
+    // Function to render blogs
+    async function renderBlogs() {
+        blogs = await fetchBlogs();
+        blogCountElement.textContent = blogs.length; // Update total blog count
 
-    const blogsContainer = document.getElementById('blogsContainer');
-    blogsContainer.innerHTML = ''; // Clear existing blogs before rendering new ones
+        const blogsContainer = document.getElementById('blogsContainer');
+        blogsContainer.innerHTML = ''; // Clear existing blogs before rendering new ones
 
-    blogs.forEach((blog, index) => {
-        const blogContainer = document.createElement('div');
-        blogContainer.classList.add('image-container');
+        blogs.forEach((blog, index) => {
+            const blogContainer = document.createElement('div');
+            blogContainer.classList.add('image-container');
 
-        const blogDetails = document.createElement('div');
-        blogDetails.classList.add('image-details');
+            const blogDetails = document.createElement('div');
+            blogDetails.classList.add('image-details');
 
-        const blogTitle = document.createElement('h2');
-        blogTitle.textContent = blog.title;
-        blogDetails.appendChild(blogTitle);
+            const blogTitle = document.createElement('h2');
+            blogTitle.textContent = blog.title;
+            blogDetails.appendChild(blogTitle);
 
-        const enteredImage = document.createElement('img');
-        enteredImage.src = blog.imageUrl;
+            const enteredImage = document.createElement('img');
+            enteredImage.src = blog.imageUrl;
 
-        const blogDescription = document.createElement('p');
-        blogDescription.textContent = blog.description;
+            const blogDescription = document.createElement('p');
+            blogDescription.textContent = blog.description;
 
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit Blog';
-        editButton.addEventListener('click', () => handleEdit(blog._id)); // Pass blog ID to handleEdit function
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit Blog';
+            editButton.onclick = () => {
+            blogDetails.remove()
+            handleEdit(blog._id)
+            }; // Pass blog ID to handleEdit function
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete Blog';
-        deleteButton.addEventListener('click', () => handleDelete(blog._id)); // Pass blog ID to handleDelete function
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete Blog';
+            deleteButton.onclick = () => handleDelete(blog._id); // Pass blog ID to handleDelete function
 
-        blogDetails.appendChild(blogTitle);
-        blogDetails.appendChild(enteredImage);
-        blogDetails.appendChild(blogDescription);
-        blogDetails.appendChild(editButton);
-        blogDetails.appendChild(deleteButton);
+            blogDetails.appendChild(enteredImage);
+            blogDetails.appendChild(blogDescription);
+            blogDetails.appendChild(editButton);
+            blogDetails.appendChild(deleteButton);
 
-        blogContainer.appendChild(blogDetails);
-        blogContainer.setAttribute('data-blog-id', blog._id); // Set data attribute for the blog ID
+            blogContainer.appendChild(blogDetails);
+            blogContainer.setAttribute('data-blog-id', blog._id); // Set data attribute for the blog ID
 
-        blogsContainer.appendChild(blogContainer);
-    });
-}
-
-// Initial rendering
-renderBlogs();
-
-// Blog form submission
-document.getElementById('blogForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const imageUrl = document.getElementById('imageUrl').value;
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-
-    try {
-        // Post new blog
-        await axios.post('https://crudcrud.com/api/8b03a74bec00430684d0c6cad8fd477f/data', {
-            imageUrl,
-            title,
-            description
+            blogsContainer.appendChild(blogContainer);
+            if (index < blogs.length - 1) {
+                const horizontalLine = document.createElement('hr');
+                blogsContainer.appendChild(horizontalLine);
+            }
         });
-
-        // Increment blog count
-        blogCount++;
-        blogCountElement.textContent = blogCount;
-
-        // Re-render blogs
-        renderBlogs();
-
-        // Store input values in local storage
-        localStorage.setItem('imageUrl', imageUrl);
-        localStorage.setItem('title', title);
-        localStorage.setItem('description', description);
-
-        // Clear form fields after submission
-        document.getElementById('imageUrl').value = '';
-        document.getElementById('title').value = '';
-        document.getElementById('description').value = '';
-    } catch (error) {
-        console.error('Error posting blog:', error);
     }
-});
 
-// Function to handle blog edit
-async function handleEdit(blogId) {
-    const imageUrl = document.getElementById('imageUrl').value;
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
+    // Initial rendering
+    renderBlogs();
 
-    try {
-        // Update blog using axios.put
-        await axios.put(`https://crudcrud.com/api/8b03a74bec00430684d0c6cad8fd477f/data/${blogId}`, {
-            imageUrl,
-            title,
-            description
-        });
+    // Blog form submission
+    document.getElementById('blogForm').addEventListener('submit',handleSubmit) 
+        async function handleSubmit(event) {
+        event.preventDefault();
+        const imageUrl = document.getElementById('imageUrl').value;
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
 
-        // Re-render blogs
-        renderBlogs();
-    } catch (error) {
-        console.error('Error updating blog:', error);
+        try {
+            // Post new blog
+            await axios.post('https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data', {
+                imageUrl,
+                title,
+                description
+            });
+
+            // Increment blog count
+            blogCount++;
+            blogCountElement.textContent = blogCount;
+
+            // Re-render blogs
+            renderBlogs();
+
+            // Clear form fields after submission
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+        } catch (error) {
+            console.error('Error posting blog:', error);
+        }
+    };
+
+    // Function to handle blog edit
+    async function handleEdit(blogId) {
+
+        const blogToEdit = blogs.find(blog => blog._id === blogId);
+
+        // Populate form fields with the values of the selected blog
+        document.getElementById('imageUrl').value = blogToEdit.imageUrl;
+        document.getElementById('title').value = blogToEdit.title;
+        document.getElementById('description').value = blogToEdit.description;
+
+        // Change submit button to "Edit Blog" button
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.textContent = "Edit Blog";
+        submitButton.onclick = async () => {
+            // When "Edit Blog" button is clicked, call handleEditBlog function
+            await handleEditBlog(blogId);
+            
+             console.log('render')
+        };
     }
-}
 
-// Function to handle blog deletion
-async function handleDelete(blogId) {
-    console.log('Deleting blog with id:', blogId);
-    try {
-        // Delete blog
-        await axios.delete(`https://crudcrud.com/api/8b03a74bec00430684d0c6cad8fd477f/data/${blogId}`);
-        // Decrement blog count
-        blogCount--;
-        blogCountElement.textContent = blogCount;
+    // Function to handle editing a blog
+    async function handleEditBlog(blogId) {
+        const imageUrl = document.getElementById('imageUrl').value;
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
 
-        // Re-render blogs
-        renderBlogs();
-    } catch (error) {
-        console.error('Error deleting blog:', error);
+        
+        try {
+            // Update blog using axios.put
+            await axios.put(`https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data/${blogId}`, {
+                imageUrl,
+                title,
+                description
+            });
+
+            // Delete the existing blog
+            handleDelete(blogId);
+
+            // Find the index of the edited blog
+            const index = blogs.findIndex(blog => blog._id === blogId);
+
+            // Update the existing blog's properties
+            blogs[index].imageUrl = imageUrl;
+            blogs[index].title = title;
+            blogs[index].description = description;
+
+            // Re-render blogs
+            renderBlogs();
+
+            // Change submit button back to "Post Blog" button
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.textContent = "Post Blog";
+            submitButton.onclick = handleSubmit; // Restore the event listener for posting new blogs
+        } catch (error) {
+            console.error('Error updating blog:', error);
+        }
     }
-}
+
+
+    // Function to handle blog deletion
+    async function handleDelete(blogId) {
+        console.log('Deleting blog with id:', blogId);
+        try {
+            // Delete blog
+            await axios.delete(`https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data/${blogId}`);
+            // Decrement blog count
+            blogCount--;
+            blogCountElement.textContent = blogCount;
+
+            // Re-render blogs
+            renderBlogs();
+        } catch (error) {
+            console.error('Error deleting blog:', error);
+        }
+    }
 </script>
-
     
 </body>
+</html>
