@@ -5,93 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>REST API Page</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        .content {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .content h3, .content p {
-            margin: 0;
-            font-weight:bold;
-            font-size:small;
-        }
-        #blogCount {
-            font-weight: bold;
-            font-size:small;
-        }
-        .form-container {
-            width: 100%;
-            max-width: 400px;
-            align-self: flex-start;
-        }
-        .form-group {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .form-group label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-        .form-group input,
-        .form-group textarea {
-            flex: 1;
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
-        #blogsContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 20px;
-        }
-        .image-container {
-            position:relative;
-            width: 250px;
-            margin-right:0;
-        }
+       
+       .content {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content h3, .content p {
+    margin: 0;
+    font-weight:bold;
+    font-size:large;
+}
+
+#blogCount {
+    font-weight: bold;
+    font-size:large;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 400px;
+    align-self: flex-start;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.form-container button {
+      width:70%;
+    padding: 8px;
+    
+
+     /* Set text color */
+    border: 1px solid; /* Add border */
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+
+
         
-        .image-container img {
-            width: 100%;
-        }
-        .image-details {
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-        } 
-        .image-details h2 {
-            margin-top: 0;
-        }
-        .image-details p {
-            margin-bottom: 10px;
-        }
-        .image-details button {
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
@@ -135,7 +105,7 @@
     // Function to fetch blogs
     async function fetchBlogs() {
         try {
-            const response = await axios.get('https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data'); // Replace 'your-api-endpoint' with your actual endpoint
+            const response = await axios.get('https://crudcrud.com/api/a990a9bd5b5940dcba2188140c36ef14/data'); // Replace 'your-api-endpoint' with your actual endpoint
             blogs = response.data;
             return blogs;
         } catch (error) {
@@ -209,7 +179,7 @@
 
         try {
             // Post new blog
-            await axios.post('https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data', {
+            await axios.post('https://crudcrud.com/api/a990a9bd5b5940dcba2188140c36ef14/data', {
                 imageUrl,
                 title,
                 description
@@ -261,7 +231,7 @@
         
         try {
             // Update blog using axios.put
-            await axios.put(`https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data/${blogId}`, {
+            await axios.put(`https://crudcrud.com/api/a990a9bd5b5940dcba2188140c36ef14/data/${blogId}`, {
                 imageUrl,
                 title,
                 description
@@ -296,7 +266,7 @@
         console.log('Deleting blog with id:', blogId);
         try {
             // Delete blog
-            await axios.delete(`https://crudcrud.com/api/21c3696466284462983a4c35448598a0/data/${blogId}`);
+            await axios.delete(`https://crudcrud.com/api/a990a9bd5b5940dcba2188140c36ef14/data/${blogId}`);
             // Decrement blog count
             blogCount--;
             blogCountElement.textContent = blogCount;
